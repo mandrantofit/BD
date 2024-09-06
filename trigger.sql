@@ -4,7 +4,7 @@ CREATE TRIGGER historique_after_delete
 AFTER DELETE ON affectation
 FOR EACH ROW
 BEGIN
-  INSERT INTO historique_affectation (
+  INSERT INTO historique (
     ID_affectation,
     ID_utilisateur,
     ID_materiel,
