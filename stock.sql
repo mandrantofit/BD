@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : jeu. 05 sep. 2024 à 15:23
+-- Généré le : lun. 09 sep. 2024 à 15:38
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -33,6 +33,27 @@ CREATE TABLE `affectation` (
   `ID_materiel` int(11) DEFAULT NULL,
   `date_affectation` date DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déclencheurs `affectation`
+--
+DELIMITER $$
+CREATE TRIGGER `historique_after_delete` AFTER DELETE ON `affectation` FOR EACH ROW BEGIN
+  INSERT INTO historique (
+    ID_affectation,
+    ID_utilisateur,
+    ID_materiel,
+    date_affectation
+  )
+  VALUES (
+    OLD.ID_affectation,
+    OLD.ID_utilisateur,
+    OLD.ID_materiel,
+    OLD.date_affectation
+  );
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -108,6 +129,28 @@ INSERT INTO `fournisseur` (`ID_fournisseur`, `nom`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `historique`
+--
+
+CREATE TABLE `historique` (
+  `ID_historique` int(11) NOT NULL,
+  `ID_affectation` int(11) DEFAULT NULL,
+  `ID_utilisateur` int(11) DEFAULT NULL,
+  `ID_materiel` int(11) DEFAULT NULL,
+  `date_affectation` date DEFAULT NULL,
+  `date_suppression` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `historique`
+--
+
+INSERT INTO `historique` (`ID_historique`, `ID_affectation`, `ID_utilisateur`, `ID_materiel`, `date_affectation`, `date_suppression`) VALUES
+(2, 2, 1, 1, '2024-09-09', '2024-09-09 13:33:29');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `log_user`
 --
 
@@ -134,6 +177,7 @@ INSERT INTO `log_user` (`ID_logUser`, `type`, `email`, `password_hash`) VALUES
 
 CREATE TABLE `materiel` (
   `ID_materiel` int(11) NOT NULL,
+  `numero_inventaire` varchar(255) NOT NULL,
   `modele` varchar(255) NOT NULL,
   `marque` varchar(255) NOT NULL,
   `numero_serie` varchar(255) NOT NULL,
@@ -145,6 +189,19 @@ CREATE TABLE `materiel` (
   `bon_de_livraison` varchar(255) DEFAULT NULL,
   `attribution` varchar(20) NOT NULL DEFAULT 'non'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `materiel`
+--
+
+INSERT INTO `materiel` (`ID_materiel`, `numero_inventaire`, `modele`, `marque`, `numero_serie`, `ID_categorie`, `ID_etat`, `ID_fournisseur`, `bon_de_commande`, `config`, `bon_de_livraison`, `attribution`) VALUES
+(1, '523651', 'Latitude 7420', 'Dell', '123456789', 2, 1, 4, 'BC12345', '16GB RAM, 512GB SSD', 'BL9876', 'non'),
+(2, '585216', 'Latitude 7420', 'Dell', '127556790', 2, 1, 2, 'OP12645', '8GB RAM, 256GB SSD', 'ML9676', 'non'),
+(3, '852369', 'ProBook 450 G7', 'HP', '348239876', 2, 1, 2, 'OP12890', '16GB RAM, 512GB SSD', 'ML9832', 'non'),
+(4, '523687', 'Latitude E6410', 'Dell', '123756789', 2, 2, 3, 'B12345', '16GB RAM, 512GB SSD', 'B9876', 'non'),
+(5, '523145', 'Latitude E6410', 'DELL', '10589652347', 2, 1, 4, '8569MP', 'SSD256 , 8RAM , 14\"', '65896LP', 'non'),
+(6, '785632', 'BB 2.1', 'BLACKBERRY', '25632417', 2, 2, 3, '587412OL', 'BB v2 , 2RAM', '523471OK', 'non'),
+(7, '745215', 'RJ45', 'Câble resaux', '45878932', 1, 1, 4, '5698OU', '5m', '85623UJ', 'non');
 
 -- --------------------------------------------------------
 
@@ -224,6 +281,12 @@ ALTER TABLE `fournisseur`
   ADD PRIMARY KEY (`ID_fournisseur`);
 
 --
+-- Index pour la table `historique`
+--
+ALTER TABLE `historique`
+  ADD PRIMARY KEY (`ID_historique`);
+
+--
 -- Index pour la table `log_user`
 --
 ALTER TABLE `log_user`
@@ -261,7 +324,7 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `affectation`
 --
 ALTER TABLE `affectation`
-  MODIFY `ID_affectation` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_affectation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `categorie`
@@ -282,6 +345,12 @@ ALTER TABLE `fournisseur`
   MODIFY `ID_fournisseur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT pour la table `historique`
+--
+ALTER TABLE `historique`
+  MODIFY `ID_historique` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT pour la table `log_user`
 --
 ALTER TABLE `log_user`
@@ -291,7 +360,7 @@ ALTER TABLE `log_user`
 -- AUTO_INCREMENT pour la table `materiel`
 --
 ALTER TABLE `materiel`
-  MODIFY `ID_materiel` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_materiel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `service`
