@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : lun. 09 sep. 2024 à 15:38
+-- Généré le : mar. 10 sep. 2024 à 15:54
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -33,6 +33,15 @@ CREATE TABLE `affectation` (
   `ID_materiel` int(11) DEFAULT NULL,
   `date_affectation` date DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `affectation`
+--
+
+INSERT INTO `affectation` (`ID_affectation`, `ID_utilisateur`, `ID_materiel`, `date_affectation`) VALUES
+(17, 1, 1, '2024-09-10'),
+(18, 1, 7, '2024-09-10'),
+(20, 1, 5, '2024-09-10');
 
 --
 -- Déclencheurs `affectation`
@@ -146,7 +155,10 @@ CREATE TABLE `historique` (
 --
 
 INSERT INTO `historique` (`ID_historique`, `ID_affectation`, `ID_utilisateur`, `ID_materiel`, `date_affectation`, `date_suppression`) VALUES
-(2, 2, 1, 1, '2024-09-09', '2024-09-09 13:33:29');
+(16, 16, 1, 2, '2024-09-10', '2024-09-10 10:27:16'),
+(17, 19, 1, 6, '2024-09-10', '2024-09-10 10:46:07'),
+(18, 21, 1, 2, '2024-09-10', '2024-09-10 13:48:04'),
+(19, 22, 1, 4, '2024-09-10', '2024-09-10 13:49:24');
 
 -- --------------------------------------------------------
 
@@ -167,7 +179,7 @@ CREATE TABLE `log_user` (
 
 INSERT INTO `log_user` (`ID_logUser`, `type`, `email`, `password_hash`) VALUES
 (1, 'admin', 'mandrantofit@gmail.com', '$2a$10$kZWr6acxDvWbYiM8evT1f.SdUG7kSejdsqGT4iBrLKaWqVzdzRTiC'),
-(2, 'simple', 'ma@gmail.com', '$2a$10$H1CWaUOwqY1rMm849Gv9w.EaGG03xgXLv4OIJEgX/Ditsq3BzYyyC');
+(5, 'user', 'test@test.test', '$2a$10$zaY8n7.dS0cWqQ8lSFurreffqPEdRlMvMaDo2lLK05NoLx/K/yy9a');
 
 -- --------------------------------------------------------
 
@@ -195,13 +207,13 @@ CREATE TABLE `materiel` (
 --
 
 INSERT INTO `materiel` (`ID_materiel`, `numero_inventaire`, `modele`, `marque`, `numero_serie`, `ID_categorie`, `ID_etat`, `ID_fournisseur`, `bon_de_commande`, `config`, `bon_de_livraison`, `attribution`) VALUES
-(1, '523651', 'Latitude 7420', 'Dell', '123456789', 2, 1, 4, 'BC12345', '16GB RAM, 512GB SSD', 'BL9876', 'non'),
+(1, '523651', 'Latitude 7420', 'Dell', '123456789', 2, 1, 4, 'BC12345', '16GB RAM, 512GB SSD', 'BL9876', 'oui'),
 (2, '585216', 'Latitude 7420', 'Dell', '127556790', 2, 1, 2, 'OP12645', '8GB RAM, 256GB SSD', 'ML9676', 'non'),
 (3, '852369', 'ProBook 450 G7', 'HP', '348239876', 2, 1, 2, 'OP12890', '16GB RAM, 512GB SSD', 'ML9832', 'non'),
 (4, '523687', 'Latitude E6410', 'Dell', '123756789', 2, 2, 3, 'B12345', '16GB RAM, 512GB SSD', 'B9876', 'non'),
-(5, '523145', 'Latitude E6410', 'DELL', '10589652347', 2, 1, 4, '8569MP', 'SSD256 , 8RAM , 14\"', '65896LP', 'non'),
+(5, '523145', 'Latitude E6410', 'DELL', '10589652347', 2, 1, 4, '8569MP', 'SSD256 , 8RAM , 14\"', '65896LP', 'oui'),
 (6, '785632', 'BB 2.1', 'BLACKBERRY', '25632417', 2, 2, 3, '587412OL', 'BB v2 , 2RAM', '523471OK', 'non'),
-(7, '745215', 'RJ45', 'Câble resaux', '45878932', 1, 1, 4, '5698OU', '5m', '85623UJ', 'non');
+(7, '745215', 'RJ45', 'Câble resaux', '45878932', 1, 1, 4, '5698OU', '5m', '85623UJ', 'oui');
 
 -- --------------------------------------------------------
 
@@ -324,7 +336,7 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `affectation`
 --
 ALTER TABLE `affectation`
-  MODIFY `ID_affectation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID_affectation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT pour la table `categorie`
@@ -348,13 +360,13 @@ ALTER TABLE `fournisseur`
 -- AUTO_INCREMENT pour la table `historique`
 --
 ALTER TABLE `historique`
-  MODIFY `ID_historique` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID_historique` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT pour la table `log_user`
 --
 ALTER TABLE `log_user`
-  MODIFY `ID_logUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID_logUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `materiel`
