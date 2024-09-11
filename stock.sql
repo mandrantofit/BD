@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : mar. 10 sep. 2024 à 15:54
+-- Généré le : mer. 11 sep. 2024 à 11:08
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -39,9 +39,7 @@ CREATE TABLE `affectation` (
 --
 
 INSERT INTO `affectation` (`ID_affectation`, `ID_utilisateur`, `ID_materiel`, `date_affectation`) VALUES
-(17, 1, 1, '2024-09-10'),
-(18, 1, 7, '2024-09-10'),
-(20, 1, 5, '2024-09-10');
+(25, 4, 8, '2024-09-11');
 
 --
 -- Déclencheurs `affectation`
@@ -155,10 +153,8 @@ CREATE TABLE `historique` (
 --
 
 INSERT INTO `historique` (`ID_historique`, `ID_affectation`, `ID_utilisateur`, `ID_materiel`, `date_affectation`, `date_suppression`) VALUES
-(16, 16, 1, 2, '2024-09-10', '2024-09-10 10:27:16'),
-(17, 19, 1, 6, '2024-09-10', '2024-09-10 10:46:07'),
-(18, 21, 1, 2, '2024-09-10', '2024-09-10 13:48:04'),
-(19, 22, 1, 4, '2024-09-10', '2024-09-10 13:49:24');
+(23, 23, 1, 7, '2024-09-11', '2024-09-11 05:46:54'),
+(24, 24, 1, 3, '2024-09-11', '2024-09-11 08:41:19');
 
 -- --------------------------------------------------------
 
@@ -179,7 +175,8 @@ CREATE TABLE `log_user` (
 
 INSERT INTO `log_user` (`ID_logUser`, `type`, `email`, `password_hash`) VALUES
 (1, 'admin', 'mandrantofit@gmail.com', '$2a$10$kZWr6acxDvWbYiM8evT1f.SdUG7kSejdsqGT4iBrLKaWqVzdzRTiC'),
-(5, 'user', 'test@test.test', '$2a$10$zaY8n7.dS0cWqQ8lSFurreffqPEdRlMvMaDo2lLK05NoLx/K/yy9a');
+(6, 'user', 'yahrena30@gmail.com', '$2a$10$I3d2vi1.Mh/c2je7YndiEOxE74SZfFr0DDb7JCHdS8vFkqsOgvwUO'),
+(7, 'user', 'yah@gmail.com', '$2a$10$4L27FRtW2r7VO2iaocFIc.e8ET5LAMly3zbeZCTUDRHH.CXO5qTnW');
 
 -- --------------------------------------------------------
 
@@ -190,6 +187,7 @@ INSERT INTO `log_user` (`ID_logUser`, `type`, `email`, `password_hash`) VALUES
 CREATE TABLE `materiel` (
   `ID_materiel` int(11) NOT NULL,
   `numero_inventaire` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
   `modele` varchar(255) NOT NULL,
   `marque` varchar(255) NOT NULL,
   `numero_serie` varchar(255) NOT NULL,
@@ -206,14 +204,15 @@ CREATE TABLE `materiel` (
 -- Déchargement des données de la table `materiel`
 --
 
-INSERT INTO `materiel` (`ID_materiel`, `numero_inventaire`, `modele`, `marque`, `numero_serie`, `ID_categorie`, `ID_etat`, `ID_fournisseur`, `bon_de_commande`, `config`, `bon_de_livraison`, `attribution`) VALUES
-(1, '523651', 'Latitude 7420', 'Dell', '123456789', 2, 1, 4, 'BC12345', '16GB RAM, 512GB SSD', 'BL9876', 'oui'),
-(2, '585216', 'Latitude 7420', 'Dell', '127556790', 2, 1, 2, 'OP12645', '8GB RAM, 256GB SSD', 'ML9676', 'non'),
-(3, '852369', 'ProBook 450 G7', 'HP', '348239876', 2, 1, 2, 'OP12890', '16GB RAM, 512GB SSD', 'ML9832', 'non'),
-(4, '523687', 'Latitude E6410', 'Dell', '123756789', 2, 2, 3, 'B12345', '16GB RAM, 512GB SSD', 'B9876', 'non'),
-(5, '523145', 'Latitude E6410', 'DELL', '10589652347', 2, 1, 4, '8569MP', 'SSD256 , 8RAM , 14\"', '65896LP', 'oui'),
-(6, '785632', 'BB 2.1', 'BLACKBERRY', '25632417', 2, 2, 3, '587412OL', 'BB v2 , 2RAM', '523471OK', 'non'),
-(7, '745215', 'RJ45', 'Câble resaux', '45878932', 1, 1, 4, '5698OU', '5m', '85623UJ', 'oui');
+INSERT INTO `materiel` (`ID_materiel`, `numero_inventaire`, `code`, `modele`, `marque`, `numero_serie`, `ID_categorie`, `ID_etat`, `ID_fournisseur`, `bon_de_commande`, `config`, `bon_de_livraison`, `attribution`) VALUES
+(1, '523651', 'DL7420', 'Latitude 7420', 'Dell', '123456789', 2, 1, 4, 'BC12346', '16GB RAM, 512GB HDD', 'BL9876', 'non'),
+(2, '585216', 'DL7420', 'Latitude 7420', 'Dell', '127556790', 2, 1, 2, 'OP12645', '8GB RAM, 256GB HDD', 'ML9676', 'non'),
+(3, '852369', 'HP450', 'ProBook 450 G7', 'HP', '348239876', 2, 1, 2, 'OP12890', '16GB RAM, 512GB SSD', 'ML9832', 'non'),
+(4, '523687', 'DL6410', 'Latitude E6410', 'Dell', '123756789', 2, 2, 3, 'B12345', '16GB RAM, 512GB SSD', 'B9876', 'non'),
+(5, '523145', 'DL6410', 'Latitude E6410', 'DELL', '10589652347', 2, 1, 4, '8569MP', 'SSD256 , 8RAM , 14\"', '65896LP', 'non'),
+(6, '785632', 'BB21', 'BB 2.1', 'BLACKBERRY', '25632417', 2, 2, 3, '587412OL', 'BB v2 , 2RAM', '523471OK', 'non'),
+(7, '745215', 'CR45', 'RJ45', 'Câble resaux', '45878932', 1, 1, 4, '5698OU', '5m', '85623UJ', 'non'),
+(8, '5642135', 'SS02', 'Schneider', 'Stylo', '1235875', 5, 1, 8, '4541ST', 'à encre', '3215JU', 'oui');
 
 -- --------------------------------------------------------
 
@@ -260,7 +259,8 @@ CREATE TABLE `utilisateur` (
 --
 
 INSERT INTO `utilisateur` (`ID_utilisateur`, `nom`, `ID_service`) VALUES
-(1, 'Faly', 1);
+(1, 'Faly', 1),
+(4, 'test', 5);
 
 --
 -- Index pour les tables déchargées
@@ -336,7 +336,7 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `affectation`
 --
 ALTER TABLE `affectation`
-  MODIFY `ID_affectation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `ID_affectation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT pour la table `categorie`
@@ -360,19 +360,19 @@ ALTER TABLE `fournisseur`
 -- AUTO_INCREMENT pour la table `historique`
 --
 ALTER TABLE `historique`
-  MODIFY `ID_historique` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `ID_historique` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT pour la table `log_user`
 --
 ALTER TABLE `log_user`
-  MODIFY `ID_logUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID_logUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `materiel`
 --
 ALTER TABLE `materiel`
-  MODIFY `ID_materiel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID_materiel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pour la table `service`
@@ -384,7 +384,7 @@ ALTER TABLE `service`
 -- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `ID_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Contraintes pour les tables déchargées
