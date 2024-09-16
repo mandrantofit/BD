@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : mer. 11 sep. 2024 à 11:08
+-- Généré le : lun. 16 sep. 2024 à 15:42
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -39,7 +39,10 @@ CREATE TABLE `affectation` (
 --
 
 INSERT INTO `affectation` (`ID_affectation`, `ID_utilisateur`, `ID_materiel`, `date_affectation`) VALUES
-(25, 4, 8, '2024-09-11');
+(25, 4, 8, '2024-09-11'),
+(26, 4, 3, '2024-09-16'),
+(28, 1, 6, '2024-09-16'),
+(29, 1, 7, '2024-09-16');
 
 --
 -- Déclencheurs `affectation`
@@ -154,7 +157,31 @@ CREATE TABLE `historique` (
 
 INSERT INTO `historique` (`ID_historique`, `ID_affectation`, `ID_utilisateur`, `ID_materiel`, `date_affectation`, `date_suppression`) VALUES
 (23, 23, 1, 7, '2024-09-11', '2024-09-11 05:46:54'),
-(24, 24, 1, 3, '2024-09-11', '2024-09-11 08:41:19');
+(24, 24, 1, 3, '2024-09-11', '2024-09-11 08:41:19'),
+(25, 27, 4, 7, '2024-09-16', '2024-09-16 06:41:28'),
+(26, 30, 7, 2, '2024-09-16', '2024-09-16 13:24:15'),
+(27, 31, 7, 1, '2024-09-16', '2024-09-16 13:26:46');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `lieux`
+--
+
+CREATE TABLE `lieux` (
+  `ID_lieux` int(11) NOT NULL,
+  `lieux` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `lieux`
+--
+
+INSERT INTO `lieux` (`ID_lieux`, `lieux`) VALUES
+(1, 'Locaux'),
+(2, 'Analakely'),
+(3, 'Behoririka'),
+(4, 'Ankorondrano');
 
 -- --------------------------------------------------------
 
@@ -175,8 +202,7 @@ CREATE TABLE `log_user` (
 
 INSERT INTO `log_user` (`ID_logUser`, `type`, `email`, `password_hash`) VALUES
 (1, 'admin', 'mandrantofit@gmail.com', '$2a$10$kZWr6acxDvWbYiM8evT1f.SdUG7kSejdsqGT4iBrLKaWqVzdzRTiC'),
-(6, 'user', 'yahrena30@gmail.com', '$2a$10$I3d2vi1.Mh/c2je7YndiEOxE74SZfFr0DDb7JCHdS8vFkqsOgvwUO'),
-(7, 'user', 'yah@gmail.com', '$2a$10$4L27FRtW2r7VO2iaocFIc.e8ET5LAMly3zbeZCTUDRHH.CXO5qTnW');
+(8, 'user', 'test@gmail.com', '$2a$10$nwSEXE8u6P9IYxCkgAUXoup6ESUY0PvsJb0mMMt.qlFX.F//vXsWS');
 
 -- --------------------------------------------------------
 
@@ -207,11 +233,11 @@ CREATE TABLE `materiel` (
 INSERT INTO `materiel` (`ID_materiel`, `numero_inventaire`, `code`, `modele`, `marque`, `numero_serie`, `ID_categorie`, `ID_etat`, `ID_fournisseur`, `bon_de_commande`, `config`, `bon_de_livraison`, `attribution`) VALUES
 (1, '523651', 'DL7420', 'Latitude 7420', 'Dell', '123456789', 2, 1, 4, 'BC12346', '16GB RAM, 512GB HDD', 'BL9876', 'non'),
 (2, '585216', 'DL7420', 'Latitude 7420', 'Dell', '127556790', 2, 1, 2, 'OP12645', '8GB RAM, 256GB HDD', 'ML9676', 'non'),
-(3, '852369', 'HP450', 'ProBook 450 G7', 'HP', '348239876', 2, 1, 2, 'OP12890', '16GB RAM, 512GB SSD', 'ML9832', 'non'),
+(3, '852369', 'HP450', 'ProBook 450 G7', 'HP', '348239876', 2, 1, 2, 'OP12890', '16GB RAM, 512GB SSD', 'ML9832', 'oui'),
 (4, '523687', 'DL6410', 'Latitude E6410', 'Dell', '123756789', 2, 2, 3, 'B12345', '16GB RAM, 512GB SSD', 'B9876', 'non'),
 (5, '523145', 'DL6410', 'Latitude E6410', 'DELL', '10589652347', 2, 1, 4, '8569MP', 'SSD256 , 8RAM , 14\"', '65896LP', 'non'),
-(6, '785632', 'BB21', 'BB 2.1', 'BLACKBERRY', '25632417', 2, 2, 3, '587412OL', 'BB v2 , 2RAM', '523471OK', 'non'),
-(7, '745215', 'CR45', 'RJ45', 'Câble resaux', '45878932', 1, 1, 4, '5698OU', '5m', '85623UJ', 'non'),
+(6, '785632', 'BB21', 'BB 2.1', 'BLACKBERRY', '25632417', 2, 2, 3, '587412OL', 'BB v2 , 2RAM', '523471OK', 'oui'),
+(7, '745215', 'CR45', 'RJ45', 'Câble resaux', '45878932', 1, 1, 4, '5698OU', '5m', '85623UJ', 'oui'),
 (8, '5642135', 'SS02', 'Schneider', 'Stylo', '1235875', 5, 1, 8, '4541ST', 'à encre', '3215JU', 'oui');
 
 -- --------------------------------------------------------
@@ -251,16 +277,18 @@ INSERT INTO `service` (`ID_service`, `Nom`) VALUES
 CREATE TABLE `utilisateur` (
   `ID_utilisateur` int(11) NOT NULL,
   `nom` varchar(255) NOT NULL,
-  `ID_service` int(11) DEFAULT NULL
+  `ID_service` int(11) DEFAULT NULL,
+  `ID_lieux` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `utilisateur`
 --
 
-INSERT INTO `utilisateur` (`ID_utilisateur`, `nom`, `ID_service`) VALUES
-(1, 'Faly', 1),
-(4, 'test', 5);
+INSERT INTO `utilisateur` (`ID_utilisateur`, `nom`, `ID_service`, `ID_lieux`) VALUES
+(1, 'Faly', 1, 1),
+(4, 'test', 5, 1),
+(7, 'test', 4, 3);
 
 --
 -- Index pour les tables déchargées
@@ -299,6 +327,12 @@ ALTER TABLE `historique`
   ADD PRIMARY KEY (`ID_historique`);
 
 --
+-- Index pour la table `lieux`
+--
+ALTER TABLE `lieux`
+  ADD PRIMARY KEY (`ID_lieux`);
+
+--
 -- Index pour la table `log_user`
 --
 ALTER TABLE `log_user`
@@ -326,7 +360,8 @@ ALTER TABLE `service`
 --
 ALTER TABLE `utilisateur`
   ADD PRIMARY KEY (`ID_utilisateur`),
-  ADD KEY `ID_service` (`ID_service`);
+  ADD KEY `ID_service` (`ID_service`),
+  ADD KEY `utilisateur_ibfk_2` (`ID_lieux`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -336,7 +371,7 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `affectation`
 --
 ALTER TABLE `affectation`
-  MODIFY `ID_affectation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `ID_affectation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT pour la table `categorie`
@@ -360,13 +395,19 @@ ALTER TABLE `fournisseur`
 -- AUTO_INCREMENT pour la table `historique`
 --
 ALTER TABLE `historique`
-  MODIFY `ID_historique` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `ID_historique` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT pour la table `lieux`
+--
+ALTER TABLE `lieux`
+  MODIFY `ID_lieux` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `log_user`
 --
 ALTER TABLE `log_user`
-  MODIFY `ID_logUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID_logUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pour la table `materiel`
@@ -384,7 +425,7 @@ ALTER TABLE `service`
 -- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `ID_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Contraintes pour les tables déchargées
@@ -409,7 +450,8 @@ ALTER TABLE `materiel`
 -- Contraintes pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  ADD CONSTRAINT `utilisateur_ibfk_1` FOREIGN KEY (`ID_service`) REFERENCES `service` (`ID_service`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `utilisateur_ibfk_1` FOREIGN KEY (`ID_service`) REFERENCES `service` (`ID_service`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `utilisateur_ibfk_2` FOREIGN KEY (`ID_lieux`) REFERENCES `lieux` (`ID_lieux`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
