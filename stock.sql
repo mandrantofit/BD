@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : lun. 16 sep. 2024 à 15:42
+-- Généré le : mer. 18 sep. 2024 à 14:09
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -39,10 +39,7 @@ CREATE TABLE `affectation` (
 --
 
 INSERT INTO `affectation` (`ID_affectation`, `ID_utilisateur`, `ID_materiel`, `date_affectation`) VALUES
-(25, 4, 8, '2024-09-11'),
-(26, 4, 3, '2024-09-16'),
-(28, 1, 6, '2024-09-16'),
-(29, 1, 7, '2024-09-16');
+(44, 9, 9, '2024-09-18');
 
 --
 -- Déclencheurs `affectation`
@@ -134,7 +131,8 @@ INSERT INTO `fournisseur` (`ID_fournisseur`, `nom`) VALUES
 (7, 'ADT Consultant'),
 (8, 'ICONE'),
 (9, 'HAREL MALLAC'),
-(10, 'COMPUTEK');
+(10, 'COMPUTEK'),
+(12, 'SUPREM CENTER');
 
 -- --------------------------------------------------------
 
@@ -156,11 +154,9 @@ CREATE TABLE `historique` (
 --
 
 INSERT INTO `historique` (`ID_historique`, `ID_affectation`, `ID_utilisateur`, `ID_materiel`, `date_affectation`, `date_suppression`) VALUES
-(23, 23, 1, 7, '2024-09-11', '2024-09-11 05:46:54'),
-(24, 24, 1, 3, '2024-09-11', '2024-09-11 08:41:19'),
-(25, 27, 4, 7, '2024-09-16', '2024-09-16 06:41:28'),
-(26, 30, 7, 2, '2024-09-16', '2024-09-16 13:24:15'),
-(27, 31, 7, 1, '2024-09-16', '2024-09-16 13:26:46');
+(36, 36, 7, 3, '2024-09-17', '2024-09-17 08:38:40'),
+(37, 37, 7, 3, '2024-09-17', '2024-09-17 10:05:51'),
+(38, 43, 1, 10, '2024-09-18', '2024-09-18 11:58:00');
 
 -- --------------------------------------------------------
 
@@ -202,7 +198,8 @@ CREATE TABLE `log_user` (
 
 INSERT INTO `log_user` (`ID_logUser`, `type`, `email`, `password_hash`) VALUES
 (1, 'admin', 'mandrantofit@gmail.com', '$2a$10$kZWr6acxDvWbYiM8evT1f.SdUG7kSejdsqGT4iBrLKaWqVzdzRTiC'),
-(8, 'user', 'test@gmail.com', '$2a$10$nwSEXE8u6P9IYxCkgAUXoup6ESUY0PvsJb0mMMt.qlFX.F//vXsWS');
+(13, 'admin', 'fal_mahen@yahoo.fr', '$2a$10$0pp18OpDxRYSG6PCXsiMa.cejW7jIAB4rTWZQ3n.Zsqk5bgE29dOm'),
+(14, 'user', 'yahrena30@gmail.com', '$2a$10$Gav09WNWhu2pzTQK/04BreaoQec/LKBQvlE03sN7yxh7mbOQkb53W');
 
 -- --------------------------------------------------------
 
@@ -231,14 +228,52 @@ CREATE TABLE `materiel` (
 --
 
 INSERT INTO `materiel` (`ID_materiel`, `numero_inventaire`, `code`, `modele`, `marque`, `numero_serie`, `ID_categorie`, `ID_etat`, `ID_fournisseur`, `bon_de_commande`, `config`, `bon_de_livraison`, `attribution`) VALUES
-(1, '523651', 'DL7420', 'Latitude 7420', 'Dell', '123456789', 2, 1, 4, 'BC12346', '16GB RAM, 512GB HDD', 'BL9876', 'non'),
-(2, '585216', 'DL7420', 'Latitude 7420', 'Dell', '127556790', 2, 1, 2, 'OP12645', '8GB RAM, 256GB HDD', 'ML9676', 'non'),
-(3, '852369', 'HP450', 'ProBook 450 G7', 'HP', '348239876', 2, 1, 2, 'OP12890', '16GB RAM, 512GB SSD', 'ML9832', 'oui'),
-(4, '523687', 'DL6410', 'Latitude E6410', 'Dell', '123756789', 2, 2, 3, 'B12345', '16GB RAM, 512GB SSD', 'B9876', 'non'),
-(5, '523145', 'DL6410', 'Latitude E6410', 'DELL', '10589652347', 2, 1, 4, '8569MP', 'SSD256 , 8RAM , 14\"', '65896LP', 'non'),
-(6, '785632', 'BB21', 'BB 2.1', 'BLACKBERRY', '25632417', 2, 2, 3, '587412OL', 'BB v2 , 2RAM', '523471OK', 'oui'),
-(7, '745215', 'CR45', 'RJ45', 'Câble resaux', '45878932', 1, 1, 4, '5698OU', '5m', '85623UJ', 'oui'),
-(8, '5642135', 'SS02', 'Schneider', 'Stylo', '1235875', 5, 1, 8, '4541ST', 'à encre', '3215JU', 'oui');
+(9, '87978Pop', 'DL7420', 'Latitude 7420', 'DELL', '523651', 2, 1, 12, '4541ST', '16GB RAM, 512GB HDD', '523471OK', 'oui'),
+(10, '87984652mlk', 'HP450', 'ProBook 450 G7', 'HP', '123AZERT', 2, 1, 2, '5698OU', '16GB RAM, 512GB HDD', '3215JU', 'non'),
+(11, '56421368zes', 'CRJ45', 'RJ45', 'Câble resaux', '564213', 1, 1, 1, '54621hj', '5 mètre de long', '6542168ml', 'non');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `possibilite_Marque`
+--
+
+CREATE TABLE `possibilite_Marque` (
+  `ID_marque` int(11) NOT NULL,
+  `marque` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `possibilite_Marque`
+--
+
+INSERT INTO `possibilite_Marque` (`ID_marque`, `marque`) VALUES
+(1, 'DELL'),
+(2, 'HP'),
+(4, 'ACER'),
+(5, 'Câble resaux');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `possibilite_Modele`
+--
+
+CREATE TABLE `possibilite_Modele` (
+  `ID_modele` int(11) NOT NULL,
+  `modele` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `possibilite_Modele`
+--
+
+INSERT INTO `possibilite_Modele` (`ID_modele`, `modele`) VALUES
+(1, 'Latitude 7420'),
+(2, 'Latitude E6410'),
+(3, 'ProBook 450 G7'),
+(4, 'Aspire Go d\'AMD'),
+(5, 'RJ45');
 
 -- --------------------------------------------------------
 
@@ -287,8 +322,7 @@ CREATE TABLE `utilisateur` (
 
 INSERT INTO `utilisateur` (`ID_utilisateur`, `nom`, `ID_service`, `ID_lieux`) VALUES
 (1, 'Faly', 1, 1),
-(4, 'test', 5, 1),
-(7, 'test', 4, 3);
+(9, 'Eric', 1, 1);
 
 --
 -- Index pour les tables déchargées
@@ -350,6 +384,18 @@ ALTER TABLE `materiel`
   ADD KEY `ID_fournisseur` (`ID_fournisseur`);
 
 --
+-- Index pour la table `possibilite_Marque`
+--
+ALTER TABLE `possibilite_Marque`
+  ADD PRIMARY KEY (`ID_marque`);
+
+--
+-- Index pour la table `possibilite_Modele`
+--
+ALTER TABLE `possibilite_Modele`
+  ADD PRIMARY KEY (`ID_modele`);
+
+--
 -- Index pour la table `service`
 --
 ALTER TABLE `service`
@@ -371,13 +417,13 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `affectation`
 --
 ALTER TABLE `affectation`
-  MODIFY `ID_affectation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `ID_affectation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT pour la table `categorie`
 --
 ALTER TABLE `categorie`
-  MODIFY `ID_categorie` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ID_categorie` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT pour la table `etat`
@@ -389,13 +435,13 @@ ALTER TABLE `etat`
 -- AUTO_INCREMENT pour la table `fournisseur`
 --
 ALTER TABLE `fournisseur`
-  MODIFY `ID_fournisseur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `ID_fournisseur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT pour la table `historique`
 --
 ALTER TABLE `historique`
-  MODIFY `ID_historique` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `ID_historique` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT pour la table `lieux`
@@ -407,25 +453,37 @@ ALTER TABLE `lieux`
 -- AUTO_INCREMENT pour la table `log_user`
 --
 ALTER TABLE `log_user`
-  MODIFY `ID_logUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `ID_logUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT pour la table `materiel`
 --
 ALTER TABLE `materiel`
-  MODIFY `ID_materiel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `ID_materiel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT pour la table `possibilite_Marque`
+--
+ALTER TABLE `possibilite_Marque`
+  MODIFY `ID_marque` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT pour la table `possibilite_Modele`
+--
+ALTER TABLE `possibilite_Modele`
+  MODIFY `ID_modele` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `service`
 --
 ALTER TABLE `service`
-  MODIFY `ID_service` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ID_service` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `ID_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Contraintes pour les tables déchargées
