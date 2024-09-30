@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : lun. 30 sep. 2024 à 09:06
+-- Généré le : lun. 30 sep. 2024 à 10:48
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -77,6 +77,19 @@ INSERT INTO `categorie` (`ID_categorie`, `type`) VALUES
 (4, 'Équipements de Stockage'),
 (5, 'Pièces Détachées et Accessoires'),
 (6, 'Équipements Audio/Vidéo');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `commande`
+--
+
+CREATE TABLE `commande` (
+  `ID_commande` int(11) NOT NULL,
+  `numero_serie` varchar(255) DEFAULT NULL,
+  `bon_de_commande` varchar(255) DEFAULT NULL,
+  `bon_de_livraison` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -314,6 +327,13 @@ ALTER TABLE `categorie`
   ADD PRIMARY KEY (`ID_categorie`);
 
 --
+-- Index pour la table `commande`
+--
+ALTER TABLE `commande`
+  ADD PRIMARY KEY (`ID_commande`),
+  ADD KEY `numero_serie` (`numero_serie`);
+
+--
 -- Index pour la table `etat`
 --
 ALTER TABLE `etat`
@@ -391,6 +411,12 @@ ALTER TABLE `categorie`
   MODIFY `ID_categorie` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
+-- AUTO_INCREMENT pour la table `commande`
+--
+ALTER TABLE `commande`
+  MODIFY `ID_commande` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT pour la table `etat`
 --
 ALTER TABLE `etat`
@@ -454,6 +480,12 @@ ALTER TABLE `utilisateur`
 ALTER TABLE `affectation`
   ADD CONSTRAINT `affectation_ibfk_1` FOREIGN KEY (`ID_utilisateur`) REFERENCES `utilisateur` (`ID_utilisateur`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `affectation_ibfk_2` FOREIGN KEY (`ID_materiel`) REFERENCES `materiel` (`ID_materiel`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `commande`
+--
+ALTER TABLE `commande`
+  ADD CONSTRAINT `commande_ibfk_1` FOREIGN KEY (`numero_serie`) REFERENCES `materiel` (`numero_serie`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `materiel`
