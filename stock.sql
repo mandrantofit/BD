@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : mer. 18 sep. 2024 à 14:09
+-- Généré le : lun. 30 sep. 2024 à 09:06
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -33,13 +33,6 @@ CREATE TABLE `affectation` (
   `ID_materiel` int(11) DEFAULT NULL,
   `date_affectation` date DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Déchargement des données de la table `affectation`
---
-
-INSERT INTO `affectation` (`ID_affectation`, `ID_utilisateur`, `ID_materiel`, `date_affectation`) VALUES
-(44, 9, 9, '2024-09-18');
 
 --
 -- Déclencheurs `affectation`
@@ -228,52 +221,30 @@ CREATE TABLE `materiel` (
 --
 
 INSERT INTO `materiel` (`ID_materiel`, `numero_inventaire`, `code`, `modele`, `marque`, `numero_serie`, `ID_categorie`, `ID_etat`, `ID_fournisseur`, `bon_de_commande`, `config`, `bon_de_livraison`, `attribution`) VALUES
-(9, '87978Pop', 'DL7420', 'Latitude 7420', 'DELL', '523651', 2, 1, 12, '4541ST', '16GB RAM, 512GB HDD', '523471OK', 'oui'),
-(10, '87984652mlk', 'HP450', 'ProBook 450 G7', 'HP', '123AZERT', 2, 1, 2, '5698OU', '16GB RAM, 512GB HDD', '3215JU', 'non'),
-(11, '56421368zes', 'CRJ45', 'RJ45', 'Câble resaux', '564213', 1, 1, 1, '54621hj', '5 mètre de long', '6542168ml', 'non');
+(12, '231538353', 'DL6410', 'Latitude E6410', 'DELL', '64564131', 2, 2, 1, 'BC5315', '16GB RAM/ 512GB SSD', 'BL54613', 'non'),
+(13, '654231564', 'HP640', 'Probook 640 G2', 'HP', '654643135', 2, 1, 12, 'BC35315', '16GB RAM /512GB HDD', 'BL56465', 'non');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `possibilite_Marque`
+-- Structure de la table `possibilite_Materiel`
 --
 
-CREATE TABLE `possibilite_Marque` (
-  `ID_marque` int(11) NOT NULL,
-  `marque` varchar(255) NOT NULL
+CREATE TABLE `possibilite_Materiel` (
+  `ID_possibilite` int(11) NOT NULL,
+  `possibilite_code` varchar(255) DEFAULT NULL,
+  `possibilite_marque` varchar(255) DEFAULT NULL,
+  `possibilite_modele` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `possibilite_Marque`
+-- Déchargement des données de la table `possibilite_Materiel`
 --
 
-INSERT INTO `possibilite_Marque` (`ID_marque`, `marque`) VALUES
-(1, 'DELL'),
-(2, 'HP'),
-(4, 'ACER'),
-(5, 'Câble resaux');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `possibilite_Modele`
---
-
-CREATE TABLE `possibilite_Modele` (
-  `ID_modele` int(11) NOT NULL,
-  `modele` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Déchargement des données de la table `possibilite_Modele`
---
-
-INSERT INTO `possibilite_Modele` (`ID_modele`, `modele`) VALUES
-(1, 'Latitude 7420'),
-(2, 'Latitude E6410'),
-(3, 'ProBook 450 G7'),
-(4, 'Aspire Go d\'AMD'),
-(5, 'RJ45');
+INSERT INTO `possibilite_Materiel` (`ID_possibilite`, `possibilite_code`, `possibilite_marque`, `possibilite_modele`) VALUES
+(1, 'DL7420', 'DELL', 'Latitude 7420'),
+(2, 'DL6410', 'DELL', 'Latitude E6410'),
+(3, 'HP640', 'HP', 'Probook 640 G2');
 
 -- --------------------------------------------------------
 
@@ -384,16 +355,10 @@ ALTER TABLE `materiel`
   ADD KEY `ID_fournisseur` (`ID_fournisseur`);
 
 --
--- Index pour la table `possibilite_Marque`
+-- Index pour la table `possibilite_Materiel`
 --
-ALTER TABLE `possibilite_Marque`
-  ADD PRIMARY KEY (`ID_marque`);
-
---
--- Index pour la table `possibilite_Modele`
---
-ALTER TABLE `possibilite_Modele`
-  ADD PRIMARY KEY (`ID_modele`);
+ALTER TABLE `possibilite_Materiel`
+  ADD PRIMARY KEY (`ID_possibilite`);
 
 --
 -- Index pour la table `service`
@@ -459,19 +424,13 @@ ALTER TABLE `log_user`
 -- AUTO_INCREMENT pour la table `materiel`
 --
 ALTER TABLE `materiel`
-  MODIFY `ID_materiel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ID_materiel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT pour la table `possibilite_Marque`
+-- AUTO_INCREMENT pour la table `possibilite_Materiel`
 --
-ALTER TABLE `possibilite_Marque`
-  MODIFY `ID_marque` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT pour la table `possibilite_Modele`
---
-ALTER TABLE `possibilite_Modele`
-  MODIFY `ID_modele` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `possibilite_Materiel`
+  MODIFY `ID_possibilite` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `service`
