@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : lun. 30 sep. 2024 à 10:48
+-- Généré le : lun. 30 sep. 2024 à 10:57
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -480,12 +480,6 @@ ALTER TABLE `utilisateur`
 ALTER TABLE `affectation`
   ADD CONSTRAINT `affectation_ibfk_1` FOREIGN KEY (`ID_utilisateur`) REFERENCES `utilisateur` (`ID_utilisateur`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `affectation_ibfk_2` FOREIGN KEY (`ID_materiel`) REFERENCES `materiel` (`ID_materiel`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `commande`
---
-ALTER TABLE `commande`
-  ADD CONSTRAINT `commande_ibfk_1` FOREIGN KEY (`numero_serie`) REFERENCES `materiel` (`numero_serie`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `materiel`
