@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : lun. 30 sep. 2024 à 10:57
+-- Généré le : lun. 07 oct. 2024 à 15:45
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -58,6 +58,55 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `affectation_consomable`
+--
+
+CREATE TABLE `affectation_consomable` (
+  `ID_affectation_consomable` int(11) NOT NULL,
+  `ID_utilisateur` int(11) DEFAULT NULL,
+  `ID_materiel_consomable` int(11) DEFAULT NULL,
+  `quantite_affecter` int(11) NOT NULL DEFAULT 1,
+  `date_affectation` date DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `affectation_consomable`
+--
+
+INSERT INTO `affectation_consomable` (`ID_affectation_consomable`, `ID_utilisateur`, `ID_materiel_consomable`, `quantite_affecter`, `date_affectation`) VALUES
+(1, 9, 1, 5, '2024-10-07'),
+(2, 1, 1, 15, '2024-10-07'),
+(3, 9, 1, 3, '2024-10-07');
+
+--
+-- Déclencheurs `affectation_consomable`
+--
+DELIMITER $$
+CREATE TRIGGER `decremente_quantite_consomable` BEFORE INSERT ON `affectation_consomable` FOR EACH ROW BEGIN
+    DECLARE quantite_disponible INT;
+
+    -- Vérifier la quantité disponible dans la table materiel_consomable
+    SELECT quantite INTO quantite_disponible 
+    FROM materiel_consomable 
+    WHERE ID_materiel_consomable = NEW.ID_materiel_consomable;
+
+    -- Si la quantité disponible est suffisante, on décrémente
+    IF quantite_disponible >= NEW.quantite_affecter THEN
+        UPDATE materiel_consomable 
+        SET quantite = quantite - NEW.quantite_affecter
+        WHERE ID_materiel_consomable = NEW.ID_materiel_consomable;
+    ELSE
+        -- Si la quantité disponible est insuffisante, on lève une erreur
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Quantité insuffisante pour l''affectation';
+    END IF;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `categorie`
 --
 
@@ -90,6 +139,13 @@ CREATE TABLE `commande` (
   `bon_de_commande` varchar(255) DEFAULT NULL,
   `bon_de_livraison` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `commande`
+--
+
+INSERT INTO `commande` (`ID_commande`, `numero_serie`, `bon_de_commande`, `bon_de_livraison`) VALUES
+(1, 'WTKU0CGC346P8', 'BC_DL7420', 'BL_DL7420');
 
 -- --------------------------------------------------------
 
@@ -138,7 +194,8 @@ INSERT INTO `fournisseur` (`ID_fournisseur`, `nom`) VALUES
 (8, 'ICONE'),
 (9, 'HAREL MALLAC'),
 (10, 'COMPUTEK'),
-(12, 'SUPREM CENTER');
+(12, 'SUPREM CENTER'),
+(13, 'Grossiste Andravohangy');
 
 -- --------------------------------------------------------
 
@@ -162,7 +219,8 @@ CREATE TABLE `historique` (
 INSERT INTO `historique` (`ID_historique`, `ID_affectation`, `ID_utilisateur`, `ID_materiel`, `date_affectation`, `date_suppression`) VALUES
 (36, 36, 7, 3, '2024-09-17', '2024-09-17 08:38:40'),
 (37, 37, 7, 3, '2024-09-17', '2024-09-17 10:05:51'),
-(38, 43, 1, 10, '2024-09-18', '2024-09-18 11:58:00');
+(38, 43, 1, 10, '2024-09-18', '2024-09-18 11:58:00'),
+(39, 45, 1, 14, '2024-10-02', '2024-10-07 13:38:36');
 
 -- --------------------------------------------------------
 
@@ -180,7 +238,7 @@ CREATE TABLE `lieux` (
 --
 
 INSERT INTO `lieux` (`ID_lieux`, `lieux`) VALUES
-(1, 'Locaux'),
+(1, 'Siège'),
 (2, 'Analakely'),
 (3, 'Behoririka'),
 (4, 'Ankorondrano');
@@ -234,8 +292,33 @@ CREATE TABLE `materiel` (
 --
 
 INSERT INTO `materiel` (`ID_materiel`, `numero_inventaire`, `code`, `modele`, `marque`, `numero_serie`, `ID_categorie`, `ID_etat`, `ID_fournisseur`, `bon_de_commande`, `config`, `bon_de_livraison`, `attribution`) VALUES
-(12, '231538353', 'DL6410', 'Latitude E6410', 'DELL', '64564131', 2, 2, 1, 'BC5315', '16GB RAM/ 512GB SSD', 'BL54613', 'non'),
-(13, '654231564', 'HP640', 'Probook 640 G2', 'HP', '654643135', 2, 1, 12, 'BC35315', '16GB RAM /512GB HDD', 'BL56465', 'non');
+(14, '6423131', 'DL7420', 'Latitude 7420', 'DELL', 'WTKU0CGC346P8', 2, 2, 1, 'BC_DL7420', '16goMem , 256SSD', 'BL_DL7420', 'non');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `materiel_consomable`
+--
+
+CREATE TABLE `materiel_consomable` (
+  `ID_materiel_consomable` int(11) NOT NULL,
+  `numero_inventaire` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `modele` varchar(255) NOT NULL,
+  `marque` varchar(255) NOT NULL,
+  `ID_fournisseur` int(11) DEFAULT NULL,
+  `bon_de_commande` varchar(255) DEFAULT NULL,
+  `config` varchar(255) DEFAULT NULL,
+  `bon_de_livraison` varchar(255) DEFAULT NULL,
+  `quantite` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `materiel_consomable`
+--
+
+INSERT INTO `materiel_consomable` (`ID_materiel_consomable`, `numero_inventaire`, `code`, `modele`, `marque`, `ID_fournisseur`, `bon_de_commande`, `config`, `bon_de_livraison`, `quantite`) VALUES
+(1, 'INV-2024-002', 'MTR-AC123', 'ACME Mouse Keyboard 3000', 'ACME Corp', 13, 'BC-2024-AC123', 'sans fil', 'BL-2024-AC123', 3);
 
 -- --------------------------------------------------------
 
@@ -321,6 +404,14 @@ ALTER TABLE `affectation`
   ADD KEY `ID_materiel` (`ID_materiel`);
 
 --
+-- Index pour la table `affectation_consomable`
+--
+ALTER TABLE `affectation_consomable`
+  ADD PRIMARY KEY (`ID_affectation_consomable`),
+  ADD KEY `ID_utilisateur` (`ID_utilisateur`),
+  ADD KEY `ID_materiel_consomable` (`ID_materiel_consomable`);
+
+--
 -- Index pour la table `categorie`
 --
 ALTER TABLE `categorie`
@@ -375,6 +466,13 @@ ALTER TABLE `materiel`
   ADD KEY `ID_fournisseur` (`ID_fournisseur`);
 
 --
+-- Index pour la table `materiel_consomable`
+--
+ALTER TABLE `materiel_consomable`
+  ADD PRIMARY KEY (`ID_materiel_consomable`),
+  ADD KEY `ID_fournisseur` (`ID_fournisseur`);
+
+--
 -- Index pour la table `possibilite_Materiel`
 --
 ALTER TABLE `possibilite_Materiel`
@@ -402,7 +500,13 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `affectation`
 --
 ALTER TABLE `affectation`
-  MODIFY `ID_affectation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `ID_affectation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+
+--
+-- AUTO_INCREMENT pour la table `affectation_consomable`
+--
+ALTER TABLE `affectation_consomable`
+  MODIFY `ID_affectation_consomable` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `categorie`
@@ -414,7 +518,7 @@ ALTER TABLE `categorie`
 -- AUTO_INCREMENT pour la table `commande`
 --
 ALTER TABLE `commande`
-  MODIFY `ID_commande` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_commande` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `etat`
@@ -426,13 +530,13 @@ ALTER TABLE `etat`
 -- AUTO_INCREMENT pour la table `fournisseur`
 --
 ALTER TABLE `fournisseur`
-  MODIFY `ID_fournisseur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `ID_fournisseur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT pour la table `historique`
 --
 ALTER TABLE `historique`
-  MODIFY `ID_historique` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `ID_historique` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT pour la table `lieux`
@@ -450,7 +554,13 @@ ALTER TABLE `log_user`
 -- AUTO_INCREMENT pour la table `materiel`
 --
 ALTER TABLE `materiel`
-  MODIFY `ID_materiel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `ID_materiel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT pour la table `materiel_consomable`
+--
+ALTER TABLE `materiel_consomable`
+  MODIFY `ID_materiel_consomable` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `possibilite_Materiel`
@@ -482,12 +592,25 @@ ALTER TABLE `affectation`
   ADD CONSTRAINT `affectation_ibfk_2` FOREIGN KEY (`ID_materiel`) REFERENCES `materiel` (`ID_materiel`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Contraintes pour la table `affectation_consomable`
+--
+ALTER TABLE `affectation_consomable`
+  ADD CONSTRAINT `affectation_consomable_ibfk_1` FOREIGN KEY (`ID_utilisateur`) REFERENCES `utilisateur` (`ID_utilisateur`),
+  ADD CONSTRAINT `affectation_consomable_ibfk_2` FOREIGN KEY (`ID_materiel_consomable`) REFERENCES `materiel_consomable` (`ID_materiel_consomable`);
+
+--
 -- Contraintes pour la table `materiel`
 --
 ALTER TABLE `materiel`
   ADD CONSTRAINT `materiel_ibfk_1` FOREIGN KEY (`ID_categorie`) REFERENCES `categorie` (`ID_categorie`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `materiel_ibfk_2` FOREIGN KEY (`ID_etat`) REFERENCES `etat` (`ID_etat`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `materiel_ibfk_3` FOREIGN KEY (`ID_fournisseur`) REFERENCES `fournisseur` (`ID_fournisseur`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `materiel_consomable`
+--
+ALTER TABLE `materiel_consomable`
+  ADD CONSTRAINT `materiel_consomable_ibfk_1` FOREIGN KEY (`ID_fournisseur`) REFERENCES `fournisseur` (`ID_fournisseur`);
 
 --
 -- Contraintes pour la table `utilisateur`
